@@ -100,7 +100,7 @@ export default function AboutPage() {
               {
                 n: '02',
                 t: 'Better judgement, earlier',
-                d: 'We kill bad ideas in weeks, not years. The studio\'s shared pattern-recognition surfaces misaligned teams and broken assumptions before capital is wasted at scale.',
+                d: 'We kill bad ideas in weeks, not years. The studio's shared pattern-recognition surfaces misaligned teams and broken assumptions before capital is wasted at scale.',
               },
               {
                 n: '03',

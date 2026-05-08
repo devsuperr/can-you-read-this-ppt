@@ -23,7 +23,7 @@ export default function Footer() {
                 width: 36, height: 36,
                 background: '#0a1628',
                 border: '1px solid rgba(212,175,55,0.4)',
-                display: 'flex\', alignItems: \'center\', justifyContent: \'center',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,
               }}>
                 <span className="font-display" style={{ color: '#d4af37', fontWeight: 700, fontSize: 18 }}>M</span>

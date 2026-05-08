@@ -38,11 +38,11 @@ export const ventures: Venture[] = [
     status: 'featured',
     highlight: '60% allocated',
     detail: {
-      what: 'WorkHub is a workforce-management platform built on top of Pointspay\'s payment infrastructure — combining scheduling, payroll, contractor management, and compliance into a single product for Nordic employers.',
+      what: 'WorkHub is a workforce-management platform built on top of Pointspay's payment infrastructure — combining scheduling, payroll, contractor management, and compliance into a single product for Nordic employers.',
       problem: 'Nordic SMEs juggle three to five disconnected tools to manage their workforce: one for scheduling, another for payroll, another for compliance documentation. The friction is expensive — errors, delays, and administrative overhead eat directly into margins.',
       solution: 'WorkHub consolidates the entire workflow into one platform. Managers schedule, approve timesheets, and run payroll from a single dashboard. Integration with Pointspay means payments settle instantly — no waiting, no manual bank transfers.',
       businessModel: 'Per-seat SaaS subscription (monthly or annual) with a transaction fee on payroll processed through the Pointspay rail. Revenue is recurring and grows with customer headcount.',
-      whyNow: 'Pointspay\'s rail is live and proven. The workforce-management category in the Nordics is fragmented — no dominant player at the SME tier. AI-assisted scheduling and compliance automation have made it possible to build in months what would have taken years in the 2018 cycle.',
+      whyNow: 'Pointspay's rail is live and proven. The workforce-management category in the Nordics is fragmented — no dominant player at the SME tier. AI-assisted scheduling and compliance automation have made it possible to build in months what would have taken years in the 2018 cycle.',
       metrics: [
         { label: 'Revenue', value: 'Live · generating' },
         { label: 'Round status', value: '60% allocated' },

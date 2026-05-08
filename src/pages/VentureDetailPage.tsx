@@ -30,7 +30,7 @@ const details: Record<string, VentureDetail> = {
     headline: 'Workforce management, reimagined on Pointspay infrastructure.',
     what: 'WorkHub is a modern workforce-management platform built on top of the Pointspay payment and identity infrastructure. It handles scheduling, timesheets, shift bidding, and payroll compliance for distributed teams.',
     problem: 'Workforce management tools are fragmented — one system for scheduling, another for payroll, a third for compliance. Mid-size employers lose 4–6 hours per manager per week reconciling data across platforms.',
-    solution: 'A single platform that unifies shift management, real-time attendance, payroll export, and compliance reporting — all running on Pointspay\'s identity rails so every action is audit-ready by default.',
+    solution: 'A single platform that unifies shift management, real-time attendance, payroll export, and compliance reporting — all running on Pointspay's identity rails so every action is audit-ready by default.',
     model: 'Monthly SaaS per seat, tiered by team size. Integration fees for enterprise payroll connectors. Pointspay transaction revenue share on embedded payroll disbursements.',
     whyNow: 'Post-pandemic hybrid work has permanently fragmented the workforce. Employers are actively replacing legacy HR tools. WorkHub enters a market mid-replacement cycle, with a structural cost advantage from shared Mosaic engineering.',
     metrics: [
@@ -46,11 +46,11 @@ const details: Record<string, VentureDetail> = {
   },
   keep: {
     headline: '13 client-facing products. One platform. Fully under your brand.',
-    what: 'Keep is a white-labelled AI operating system for Nordic accounting firms. It delivers 13 integrated products — document ingestion, automated bookkeeping, VAT filing, payroll, client portal, and more — all under the firm\'s own brand identity.',
-    problem: 'Nordic accounting firms face a two-front war: major consolidators are acquiring them at record pace while AI tools are eroding the value of manual bookkeeping. Independent firms can\'t afford to build their own tech stack.',
+    what: 'Keep is a white-labelled AI operating system for Nordic accounting firms. It delivers 13 integrated products — document ingestion, automated bookkeeping, VAT filing, payroll, client portal, and more — all under the firm's own brand identity.',
+    problem: 'Nordic accounting firms face a two-front war: major consolidators are acquiring them at record pace while AI tools are eroding the value of manual bookkeeping. Independent firms can't afford to build their own tech stack.',
     solution: 'Keep gives independent firms enterprise-grade AI tooling in three weeks — fully white-labelled, deeply integrated with their existing workflows, and updated continuously by the Mosaic studio team.',
     model: 'White-label SaaS licence fee per firm, scaled by number of clients managed. Upsell on premium modules (audit prep, multi-entity consolidation). Revenue share on embedded payment flows.',
-    whyNow: 'The EU accounting directive and Norway\'s SAF-T mandate are forcing firms to digitise now. Consolidators have created urgency — independent firms need to demonstrate tech capability or sell. Keep is the defensive tool that lets them compete.',
+    whyNow: 'The EU accounting directive and Norway's SAF-T mandate are forcing firms to digitise now. Consolidators have created urgency — independent firms need to demonstrate tech capability or sell. Keep is the defensive tool that lets them compete.',
     metrics: [
       { label: 'Products included', value: '13' },
       { label: 'Time to live', value: '3 weeks' },
@@ -66,9 +66,9 @@ const details: Record<string, VentureDetail> = {
     headline: 'The world\'s first AI-native Nordic Noir universe.',
     what: 'MDIO — Max Dahl — is a transmedia IP universe built from the ground up for the AI era. The 14-volume saga, an interactive cold-case investigation platform, and a personal AI investigator are not separate products bolted together — they are one unified experience.',
     problem: 'Traditional media IP is built for a single format: a book becomes a show, a show becomes a game. Each transition loses fidelity, audience, and margin. Meanwhile, readers and streamers want immersive, interactive worlds they can inhabit — not just watch.',
-    solution: 'MDIO builds one universe across three surfaces simultaneously. Every chapter of the saga feeds the platform\'s case archive. The AI investigator is trained on the universe\'s lore, giving readers a companion that deepens as they read.',
+    solution: 'MDIO builds one universe across three surfaces simultaneously. Every chapter of the saga feeds the platform's case archive. The AI investigator is trained on the universe's lore, giving readers a companion that deepens as they read.',
     model: 'Book sales and subscription access to the investigation platform. Licensing to Netflix/HBO for screen adaptation. B2B licensing of the AI-narrative engine to other IP holders.',
-    whyNow: 'Streaming platforms are actively seeking Nordic Noir with built-in audience and IP depth. The AI narrative tooling that makes MDIO possible didn\'t exist three years ago — first-mover advantage in AI-native storytelling is open right now.',
+    whyNow: 'Streaming platforms are actively seeking Nordic Noir with built-in audience and IP depth. The AI narrative tooling that makes MDIO possible didn't exist three years ago — first-mover advantage in AI-native storytelling is open right now.',
     metrics: [
       { label: 'Saga volumes', value: '14' },
       { label: 'Platform', value: 'Live Q3 2026' },
@@ -145,7 +145,7 @@ const details: Record<string, VentureDetail> = {
   innlandet: {
     headline: 'Local digital partner for craft and trades businesses in Innlandet.',
     what: 'Innlandet AI Partner is a regional digital agency serving craft businesses, tradespeople, and local service providers across the Innlandet county. It delivers websites, customer portals, booking systems, and AI-powered command centres — all built and maintained by the Mosaic studio team.',
-    problem: 'Small businesses in rural Norway are digitally underserved. Generic website builders require skills they don\'t have. National agencies are too expensive and don\'t understand local markets. The result is an invisible local economy.',
+    problem: 'Small businesses in rural Norway are digitally underserved. Generic website builders require skills they don't have. National agencies are too expensive and don't understand local markets. The result is an invisible local economy.',
     solution: 'A regionally embedded digital partner that speaks the language, knows the regulations, and delivers enterprise-quality digital infrastructure at SME pricing — powered by Mosaic\'s studio-scale build efficiency.',
     model: 'Monthly retainer for ongoing maintenance and updates. Fixed project fees for initial builds. Upsell on AI command centres (automated booking, customer communication, inventory signals).',
     whyNow: 'Norwegian government digitisation grants (Innovasjon Norge) are actively funding SME digital transformation. Innlandet has a high concentration of craft businesses with zero digital presence and grant money available to spend.',
@@ -177,7 +177,7 @@ const details: Record<string, VentureDetail> = {
   'optimal-rekruttering': {
     headline: 'AI screening in Norwegian. 48-hour shortlist. No CV pile.',
     what: 'Optimal Rekruttering AI is an intelligent screening layer that sits between job posting and recruiter review. It conducts structured Norwegian-language AI interviews with every applicant, scores them against the role criteria, and delivers a ranked shortlist within 48 hours.',
-    problem: 'Recruiters spend 60–70% of their time screening applications that won\'t make the shortlist. The screening step is the most time-intensive and least value-adding part of recruitment — and it scales poorly with volume.',
+    problem: 'Recruiters spend 60–70% of their time screening applications that won't make the shortlist. The screening step is the most time-intensive and least value-adding part of recruitment — and it scales poorly with volume.',
     solution: 'Every applicant receives an AI-conducted interview — structured, consistent, bias-reduced, and fully in Norwegian. The system scores on competency, cultural alignment, and role fit, then delivers a ranked, reasoned shortlist to the recruiter.',
     model: 'Per-role fee for shortlist delivery. Monthly subscription for high-volume recruiters (agencies, enterprise HR). White-label API for ATS integrations (Teamtailor, Webcruiter).',
     whyNow: 'The Norwegian labour market is tight. Recruiters are overwhelmed. AI interview tools trained on English exist — but none optimised for Norwegian language, culture, and labour law compliance. First-mover advantage in a mid-size, high-value market.',
@@ -225,7 +225,7 @@ const details: Record<string, VentureDetail> = {
   soknadshjelp: {
     headline: 'Self-service AI for Innovation Norway and SkatteFUNN — no consultants, one session.',
     what: 'SøknadsHjelp AI is a guided grant-application tool for Norwegian SMEs. It coaches founders and operators through the Innovation Norway and SkatteFUNN application processes with an AI trained on every approved application in the archive — producing fundable drafts in a single guided session.',
-    problem: 'Grant consultants charge NOK 30–80K to write a SkatteFUNN application — for a grant that\'s worth NOK 100–500K. Smaller companies can\'t afford the consultant and leave public funding on the table. The application process is opaque, inconsistent, and administratively burdensome.',
+    problem: 'Grant consultants charge NOK 30–80K to write a SkatteFUNN application — for a grant that\'s worth NOK 100–500K. Smaller companies can't afford the consultant and leave public funding on the table. The application process is opaque, inconsistent, and administratively burdensome.',
     solution: 'A structured AI coach that walks applicants through the grant criteria question by question, flags the evidence they need to provide, and assembles a compliant application document — trained on the language and framing patterns of approved applications.',
     model: 'Per-application fee (fraction of consultant cost). Subscription for accountants and advisors handling multiple clients. Revenue share with accounting firm partners who bundle SøknadsHjelp into their service offer.',
     whyNow: 'Innovation Norway\'s 2024 budget increased by 18%. SkatteFUNN approvals hit a five-year high. Awareness of available grants is at record levels — but uptake is constrained by the friction of the application process, not by lack of eligibility.',

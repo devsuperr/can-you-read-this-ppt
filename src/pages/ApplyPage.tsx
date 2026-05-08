@@ -88,133 +88,54 @@ export default function ApplyPage() {
     setSubmitting(true);
     setSubmitError(null);
 
-    /* ── Email #1 — internal notification to the team ──────────────────── */
-    const teamBody = `
-      <div style="font-family:Inter,system-ui,sans-serif;color:#1b1b1b;max-width:640px;">
-        <h2 style="font-family:Georgia,serif;font-weight:300;font-size:24px;margin:0 0 8px;">
-          New investment application
-        </h2>
-        <p style="color:#575ecf;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;margin:0 0 24px;">
-          Mosaic Venture Studio · mosaicventure.studio
-        </p>
-        <table style="width:100%;border-collapse:collapse;font-size:14px;">
-          <tr><td style="padding:8px 0;color:#888;width:160px;">Full name</td><td style="padding:8px 0;font-weight:500;">${escapeHtml(form.fullName)}</td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Email</td><td style="padding:8px 0;"><a href="mailto:${escapeHtml(form.email)}" style="color:#575ecf;text-decoration:none;">${escapeHtml(form.email)}</a></td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Phone</td><td style="padding:8px 0;">${escapeHtml(form.phone) || '—'}</td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Company / family office</td><td style="padding:8px 0;">${escapeHtml(form.company) || '—'}</td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Tier</td><td style="padding:8px 0;font-weight:500;">${escapeHtml(form.tier)}</td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Ticket size</td><td style="padding:8px 0;">${escapeHtml(form.ticket)}</td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Founding Five</td><td style="padding:8px 0;color:${form.foundingFive ? '#575ecf' : '#888'};font-weight:${form.foundingFive ? '600' : '400'};">${form.foundingFive ? 'Yes — requested' : 'No'}</td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Source</td><td style="padding:8px 0;">${escapeHtml(form.source) || '—'}</td></tr>
-        </table>
-        <div style="margin-top:24px;padding-top:16px;border-top:1px solid #e5e5e5;">
-          <div style="color:#888;font-size:13px;margin-bottom:8px;">Notes</div>
-          <div style="white-space:pre-wrap;font-size:14px;line-height:1.6;">${escapeHtml(form.notes) || '(none)'}</div>
-        </div>
-      </div>
-    `.trim();
+    /* ── Submit via Vercel Edge Function ───────────────────────────────
+       Calls /api/send-application-email — same origin as the published
+       site, so no CORS issues. The function proxies to Appointus
+       server-side (where CORS doesn't apply), builds both styled HTML
+       emails (team + applicant), and fires them.
 
-    /* ── Email #2 — confirmation to the applicant ──────────────────────── */
-    const firstName = form.fullName.split(' ')[0] || 'there';
-    const applicantBody = `
-      <div style="font-family:Inter,system-ui,sans-serif;color:#1b1b1b;max-width:640px;background:#dcdad5;padding:48px 40px;">
-        <p style="color:#575ecf;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;margin:0 0 32px;">
-          Mosaic Venture Studio · Oslo
-        </p>
-        <h1 style="font-family:Georgia,serif;font-weight:300;font-size:36px;line-height:1.1;margin:0 0 24px;color:#1b1b1b;">
-          Thank you, <span style="color:#575ecf;">${escapeHtml(firstName)}</span>.
-        </h1>
-        <p style="font-size:16px;line-height:1.6;margin:0 0 20px;color:#1b1b1b;">
-          We've received your application to invest in Mosaic Venture Studio. A managing
-          partner is reviewing it personally and will respond within <strong>48 hours</strong>
-          to schedule a confidential call.
-        </p>
-        <div style="margin:32px 0;padding:24px;background:#fff;border-left:3px solid #575ecf;">
-          <div style="color:#888;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px;">
-            Your application
-          </div>
-          <table style="width:100%;border-collapse:collapse;font-size:14px;">
-            <tr><td style="padding:6px 0;color:#888;width:140px;">Tier</td><td style="padding:6px 0;font-weight:500;">${escapeHtml(form.tier)}</td></tr>
-            <tr><td style="padding:6px 0;color:#888;">Ticket size</td><td style="padding:6px 0;">${escapeHtml(form.ticket)}</td></tr>
-            ${form.foundingFive ? `<tr><td style="padding:6px 0;color:#888;">Founding Five</td><td style="padding:6px 0;color:#575ecf;font-weight:600;">Requested</td></tr>` : ''}
-          </table>
-        </div>
-        <p style="font-size:15px;line-height:1.6;margin:0 0 20px;color:#1b1b1b;">
-          In the meantime, you can browse the 13 ventures already inside the studio at
-          <a href="https://mosaicventure.studio/projects" style="color:#575ecf;text-decoration:none;">mosaicventure.studio/projects</a>,
-          or read the full investor case at
-          <a href="https://mosaicventure.studio/investors" style="color:#575ecf;text-decoration:none;">/investors</a>.
-        </p>
-        <p style="font-size:15px;line-height:1.6;margin:0 0 32px;color:#1b1b1b;">
-          If anything urgent comes up, reach us directly at
-          <a href="mailto:investment@mosaicventure.studio" style="color:#575ecf;text-decoration:none;">investment@mosaicventure.studio</a>.
-        </p>
-        <div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(0,0,0,0.1);">
-          <p style="font-family:Georgia,serif;font-style:italic;font-size:18px;line-height:1.4;margin:0 0 8px;color:#1b1b1b;">
-            One investment. Every venture. Shared success.
-          </p>
-          <p style="color:#888;font-size:12px;margin:0;">
-            Mosaic Venture Studio · Oslo · 2026 · Confidential
-          </p>
-        </div>
-      </div>
-    `.trim();
-
-    /* ── Send both emails via no-cors fetch — fires server-side at Appointus.
-         The Appointus API works cross-origin but doesn't return CORS headers,
-         so we use mode:'no-cors'. The request DOES reach the server and the
-         email IS sent; we just can't read the response (opaque response).
-         This works on every domain — studio preview, published URL, custom domain.
-         ───────────────────────────────────────────────────────────────────── */
-    const API_URL = 'https://api.appointusonline.com/SendEmailWithFrom';
-    const API_KEY = '061ac5ea-c9a6-4883-acd3-c21cdbb0dd62';
-
-    const sendEmail = (to: string, subject: string, emailBody: string, from: string) =>
-      fetch(API_URL, {
+       Works with zero config: the API key is bundled with sensible
+       defaults inside the function. To rotate, set APPOINTUS_API_KEY
+       in Vercel env vars.
+       ─────────────────────────────────────────────────────────────── */
+    try {
+      const res = await fetch('/api/send-application-email', {
         method: 'POST',
-        mode: 'no-cors',           // ← key fix: bypasses CORS preflight block
-        headers: {
-          'X-Api-Key': API_KEY,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: to, subject, body: emailBody, from }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName:     form.fullName,
+          email:        form.email,
+          phone:        form.phone,
+          company:      form.company,
+          tier:         form.tier,
+          ticket:       form.ticket,
+          foundingFive: form.foundingFive,
+          source:       form.source,
+          notes:        form.notes,
+        }),
       });
 
-    try {
-      // Fire both emails in parallel — no-cors means we can't check .ok,
-      // but the requests reach Appointus and emails land in inbox.
-      await Promise.all([
-        sendEmail(
-          'prabhjot.singh2475@gmail.com',
-          `Mosaic Application — ${form.fullName} · ${form.tier}${form.foundingFive ? ' · Founding Five' : ''}`,
-          teamBody,
-          form.fullName,
-        ),
-        sendEmail(
-          form.email,
-          'Your Mosaic Venture Studio application',
-          applicantBody,
-          'Mosaic Venture Studio',
-        ),
-      ]);
+      if (!res.ok) {
+        let msg = `Server error ${res.status}`;
+        try {
+          const data = await res.json();
+          if (data?.error) msg = data.error;
+          if (data?.detail) msg += ` — ${data.detail}`;
+        } catch {
+          /* response wasn't JSON — keep the status-code message */
+        }
+        throw new Error(msg);
+      }
 
       setSubmitting(false);
       setSubmitted(true);
     } catch (err) {
       setSubmitting(false);
+      const detail = err instanceof Error ? err.message : 'Unknown error';
       setSubmitError(
-        'Network error. Please check your connection or email investment@mosaicventure.studio directly.',
+        `Couldn't send your application (${detail}). Please email investment@mosaicventure.studio directly — we will respond within 48 hours.`,
       );
     }
-  }
-
-  function escapeHtml(s: string): string {
-    return s
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
   }
 
   /* ── Success state ─────────────────────────────────────────────────────── */
