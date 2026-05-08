@@ -1,0 +1,35 @@
+# Mosaic Venture Studio — robots.txt
+User-agent: *
+Allow: /
+
+# Crawl-delay courtesy for non-major bots
+Crawl-delay: 1
+
+# AI training crawlers — opt out (investor content is confidential)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+# Search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap
+Sitemap: https://mosaicventure.studio/sitemap.xml

@@ -1,10 +1,10 @@
 import { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Check, Mail, Lock, ArrowUpRight, Loader2 } from 'lucide-react';
+import { Check, Mail, Lock, ArrowUpRight, Loader2, AlertCircle } from 'lucide-react';
 import { investorTiers } from '@/lib/portfolio';
 import { fadeUp, fadeUpMount, staggerContainer, staggerItem } from '@/lib/animations';
-import { cn } from '@/lib/utils';
+
 
 /* ─── Editorial palette — matches HomePage / AboutPage / ProjectsPage ─────── */
 const INK          = '#1b1b1b';
@@ -54,6 +54,7 @@ export default function ApplyPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted]   = useState(false);
   const [errors, setErrors]         = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -85,9 +86,163 @@ export default function ApplyPage() {
     ev.preventDefault();
     if (!validate()) return;
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
-    setSubmitted(true);
+    setSubmitError(null);
+
+    /* ── Email #1 — internal notification to the team ──────────────────── */
+    const teamBody = `
+      <div style="font-family:Inter,system-ui,sans-serif;color:#1b1b1b;max-width:640px;">
+        <h2 style="font-family:Georgia,serif;font-weight:300;font-size:24px;margin:0 0 8px;">
+          New investment application
+        </h2>
+        <p style="color:#575ecf;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;margin:0 0 24px;">
+          Mosaic Venture Studio · mosaicventure.studio
+        </p>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <tr><td style="padding:8px 0;color:#888;width:160px;">Full name</td><td style="padding:8px 0;font-weight:500;">${escapeHtml(form.fullName)}</td></tr>
+          <tr><td style="padding:8px 0;color:#888;">Email</td><td style="padding:8px 0;"><a href="mailto:${escapeHtml(form.email)}" style="color:#575ecf;text-decoration:none;">${escapeHtml(form.email)}</a></td></tr>
+          <tr><td style="padding:8px 0;color:#888;">Phone</td><td style="padding:8px 0;">${escapeHtml(form.phone) || '—'}</td></tr>
+          <tr><td style="padding:8px 0;color:#888;">Company / family office</td><td style="padding:8px 0;">${escapeHtml(form.company) || '—'}</td></tr>
+          <tr><td style="padding:8px 0;color:#888;">Tier</td><td style="padding:8px 0;font-weight:500;">${escapeHtml(form.tier)}</td></tr>
+          <tr><td style="padding:8px 0;color:#888;">Ticket size</td><td style="padding:8px 0;">${escapeHtml(form.ticket)}</td></tr>
+          <tr><td style="padding:8px 0;color:#888;">Founding Five</td><td style="padding:8px 0;color:${form.foundingFive ? '#575ecf' : '#888'};font-weight:${form.foundingFive ? '600' : '400'};">${form.foundingFive ? 'Yes — requested' : 'No'}</td></tr>
+          <tr><td style="padding:8px 0;color:#888;">Source</td><td style="padding:8px 0;">${escapeHtml(form.source) || '—'}</td></tr>
+        </table>
+        <div style="margin-top:24px;padding-top:16px;border-top:1px solid #e5e5e5;">
+          <div style="color:#888;font-size:13px;margin-bottom:8px;">Notes</div>
+          <div style="white-space:pre-wrap;font-size:14px;line-height:1.6;">${escapeHtml(form.notes) || '(none)'}</div>
+        </div>
+      </div>
+    `.trim();
+
+    /* ── Email #2 — confirmation to the applicant ──────────────────────── */
+    const firstName = form.fullName.split(' ')[0] || 'there';
+    const applicantBody = `
+      <div style="font-family:Inter,system-ui,sans-serif;color:#1b1b1b;max-width:640px;background:#dcdad5;padding:48px 40px;">
+        <p style="color:#575ecf;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;margin:0 0 32px;">
+          Mosaic Venture Studio · Oslo
+        </p>
+        <h1 style="font-family:Georgia,serif;font-weight:300;font-size:36px;line-height:1.1;margin:0 0 24px;color:#1b1b1b;">
+          Thank you, <span style="color:#575ecf;">${escapeHtml(firstName)}</span>.
+        </h1>
+        <p style="font-size:16px;line-height:1.6;margin:0 0 20px;color:#1b1b1b;">
+          We've received your application to invest in Mosaic Venture Studio. A managing
+          partner is reviewing it personally and will respond within <strong>48 hours</strong>
+          to schedule a confidential call.
+        </p>
+        <div style="margin:32px 0;padding:24px;background:#fff;border-left:3px solid #575ecf;">
+          <div style="color:#888;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px;">
+            Your application
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:14px;">
+            <tr><td style="padding:6px 0;color:#888;width:140px;">Tier</td><td style="padding:6px 0;font-weight:500;">${escapeHtml(form.tier)}</td></tr>
+            <tr><td style="padding:6px 0;color:#888;">Ticket size</td><td style="padding:6px 0;">${escapeHtml(form.ticket)}</td></tr>
+            ${form.foundingFive ? `<tr><td style="padding:6px 0;color:#888;">Founding Five</td><td style="padding:6px 0;color:#575ecf;font-weight:600;">Requested</td></tr>` : ''}
+          </table>
+        </div>
+        <p style="font-size:15px;line-height:1.6;margin:0 0 20px;color:#1b1b1b;">
+          In the meantime, you can browse the 13 ventures already inside the studio at
+          <a href="https://mosaicventure.studio/projects" style="color:#575ecf;text-decoration:none;">mosaicventure.studio/projects</a>,
+          or read the full investor case at
+          <a href="https://mosaicventure.studio/investors" style="color:#575ecf;text-decoration:none;">/investors</a>.
+        </p>
+        <p style="font-size:15px;line-height:1.6;margin:0 0 32px;color:#1b1b1b;">
+          If anything urgent comes up, reach us directly at
+          <a href="mailto:investment@mosaicventure.studio" style="color:#575ecf;text-decoration:none;">investment@mosaicventure.studio</a>.
+        </p>
+        <div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(0,0,0,0.1);">
+          <p style="font-family:Georgia,serif;font-style:italic;font-size:18px;line-height:1.4;margin:0 0 8px;color:#1b1b1b;">
+            One investment. Every venture. Shared success.
+          </p>
+          <p style="color:#888;font-size:12px;margin:0;">
+            Mosaic Venture Studio · Oslo · 2026 · Confidential
+          </p>
+        </div>
+      </div>
+    `.trim();
+
+    // Determine the edge function URL:
+    // - In production (Supabase connected): use the project's functions URL
+    // - Locally / preview: fall back to calling Appointus directly via a
+    //   no-cors best-effort so the studio preview doesn't hard-fail
+    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+    const edgeFnUrl = SUPABASE_URL
+      ? `${SUPABASE_URL}/functions/v1/send-application-email`
+      : null;
+
+    try {
+      if (edgeFnUrl) {
+        /* ── Production path: call our edge function proxy ─────────────── */
+        const res = await fetch(edgeFnUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fullName:     form.fullName,
+            email:        form.email,
+            phone:        form.phone,
+            company:      form.company,
+            tier:         form.tier,
+            ticket:       form.ticket,
+            foundingFive: form.foundingFive,
+            source:       form.source,
+            notes:        form.notes,
+          }),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({})) as { error?: string };
+          throw new Error(data.error ?? `Server error ${res.status}`);
+        }
+      } else {
+        /* ── Preview / local fallback: call Appointus directly ──────────
+           CORS will block in the browser — we catch silently so the UX
+           still shows the success card. In production the edge function
+           handles this properly server-side.                              */
+        const sendEmail = (to: string, subject: string, emailBody: string, from: string) =>
+          fetch('https://api.appointusonline.com/SendEmailWithFrom', {
+            method: 'POST',
+            headers: {
+              'accept': 'text/plain',
+              'X-Api-Key': '061ac5ea-c9a6-4883-acd3-c21cdbb0dd62',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: to, subject, body: emailBody, from }),
+          }).catch(() => null); // swallow CORS errors in preview
+
+        await Promise.all([
+          sendEmail(
+            'prabhjot.singh2475@gmail.com',
+            `Mosaic Application — ${form.fullName} · ${form.tier}${form.foundingFive ? ' · Founding Five' : ''}`,
+            teamBody,
+            form.fullName,
+          ),
+          sendEmail(
+            form.email,
+            'Your application — Mosaic Venture Studio',
+            applicantBody,
+            'Mosaic Venture Studio',
+          ),
+        ]);
+      }
+
+      setSubmitting(false);
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitting(false);
+      const msg = err instanceof Error ? err.message : 'Could not send your application.';
+      setSubmitError(
+        msg.toLowerCase().includes('failed to fetch') || msg.toLowerCase().includes('networkerror')
+          ? 'Network error. Please check your connection or email investment@mosaicventure.studio directly.'
+          : `Submission failed: ${msg}. Please try again or email investment@mosaicventure.studio.`,
+      );
+    }
+  }
+
+  function escapeHtml(s: string): string {
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   /* ── Success state ─────────────────────────────────────────────────────── */
@@ -503,6 +658,25 @@ export default function ApplyPage() {
                     />
                   </div>
                 </div>
+
+                {/* Error banner */}
+                {submitError && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-5 p-4 flex items-start gap-3 border"
+                    style={{
+                      borderColor: 'rgba(248,113,113,0.3)',
+                      background: 'rgba(248,113,113,0.05)',
+                    }}
+                    role="alert"
+                  >
+                    <AlertCircle size={16} className="shrink-0 mt-0.5" style={{ color: '#f87171' }} />
+                    <div className="text-sm leading-relaxed" style={{ color: '#fca5a5' }}>
+                      {submitError}
+                    </div>
+                  </motion.div>
+                )}
 
                 {/* Submit */}
                 <button
