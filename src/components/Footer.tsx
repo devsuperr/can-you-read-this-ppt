@@ -1,84 +1,116 @@
 import { Link } from 'react-router-dom';
 import { Mail, Globe } from 'lucide-react';
 
+/* All colours are inline — immune to Tailwind purge on the published build. */
+const INK     = '#1b1b1b';
+const MUTED   = '#c5c1b9';
+const BEIGE   = '#dcdad5';
+const ACCENT  = '#575ecf';
+const HAIRLINE = 'rgba(255,255,255,0.08)';
+
 export default function Footer() {
   return (
-    <footer className="border-t border-white/5 bg-ink-950 mt-24">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-4 gap-12">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-9 h-9 rounded-md bg-ink-900 border border-gold-400/40 flex items-center justify-center">
-                <span className="text-gold-400 font-display font-bold text-lg leading-none">M</span>
+    <footer style={{ borderTop: `1px solid ${HAIRLINE}`, background: INK }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '80px 48px 48px' }}>
+
+        {/* Main grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 48, marginBottom: 56 }}>
+
+          {/* Brand */}
+          <div style={{ gridColumn: 'span 2' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+              <div style={{
+                width: 36, height: 36,
+                background: '#0a1628',
+                border: '1px solid rgba(212,175,55,0.4)',
+                display: 'flex\', alignItems: \'center\', justifyContent: \'center',
+                flexShrink: 0,
+              }}>
+                <span className="font-display" style={{ color: '#d4af37', fontWeight: 700, fontSize: 18 }}>M</span>
               </div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-display text-xl tracking-wide text-white">MOSAIC</span>
-                <span className="text-[10px] uppercase tracking-[0.25em] text-gold-400/70">
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                <span className="font-display" style={{ fontSize: 20, letterSpacing: '0.05em', color: '#fff' }}>MOSAIC</span>
+                <span style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.25em', color: MUTED }}>
                   Venture Studio
                 </span>
               </div>
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed max-w-md">
-              One investment vehicle that owns, builds, and operates a diversified portfolio of
-              ventures. One ticket. Every venture. Shared success.
+            <p style={{ color: MUTED, fontSize: 13, lineHeight: 1.7, maxWidth: 360 }}>
+              One investment vehicle that owns, builds, and operates a diversified portfolio
+              of ventures. One ticket. Every venture. Shared success.
             </p>
-            <div className="mt-6 flex flex-col gap-2 text-sm">
+            <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
               <a
                 href="mailto:investment@mosaicventure.studio"
-                className="text-slate-300 hover:text-gold-400 transition inline-flex items-center gap-2"
+                style={{ color: BEIGE, fontSize: 13, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}
               >
-                <Mail size={14} className="text-gold-400" />
+                <Mail size={13} style={{ color: ACCENT }} />
                 investment@mosaicventure.studio
               </a>
-              <span className="text-slate-300 inline-flex items-center gap-2">
-                <Globe size={14} className="text-gold-400" />
+              <span style={{ color: MUTED, fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <Globe size={13} style={{ color: ACCENT }} />
                 mosaicventure.studio
               </span>
             </div>
           </div>
 
+          {/* Studio links */}
           <div>
-            <h4 className="text-xs uppercase tracking-[0.25em] text-gold-400 mb-4">Studio</h4>
-            <ul className="space-y-2.5 text-sm">
-              <li>
-                <Link to="/" className="text-slate-300 hover:text-white transition">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-slate-300 hover:text-white transition">
-                  About & Investment
-                </Link>
-              </li>
-              <li>
-                <Link to="/projects" className="text-slate-300 hover:text-white transition">
-                  Portfolio
-                </Link>
-              </li>
-              <li>
-                <Link to="/apply" className="text-slate-300 hover:text-white transition">
-                  Apply for Investment
-                </Link>
-              </li>
+            <h4 style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.25em', color: ACCENT, marginBottom: 16 }}>
+              Studio
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {[
+                { to: '/', label: 'Home' },
+                { to: '/investors', label: 'Investors' },
+                { to: '/about', label: 'About' },
+                { to: '/projects', label: 'Portfolio' },
+                { to: '/apply', label: 'Apply for Investment' },
+              ].map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} style={{ color: MUTED, fontSize: 13, textDecoration: 'none' }}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Investor info */}
           <div>
-            <h4 className="text-xs uppercase tracking-[0.25em] text-gold-400 mb-4">Investor</h4>
-            <ul className="space-y-2.5 text-sm">
-              <li className="text-slate-300">Founding Five terms</li>
-              <li className="text-slate-300">Tickets NOK 100K – 8M</li>
-              <li className="text-slate-300">Quarterly reporting</li>
-              <li className="text-slate-300">Pro-rata exit participation</li>
+            <h4 style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.25em', color: ACCENT, marginBottom: 16 }}>
+              Investors
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {[
+                'Founding Five terms',
+                'Tickets NOK 100K – 8M',
+                'Quarterly reporting',
+                'Pro-rata exit participation',
+                'One LP agreement',
+              ].map((item) => (
+                <li key={item} style={{ color: MUTED, fontSize: 13 }}>{item}</li>
+              ))}
             </ul>
           </div>
         </div>
 
-        <div className="mt-14 pt-8 border-t border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-slate-500">
-          <div>© 2026 Mosaic Venture Studio AS · Oslo, Norway · Confidential</div>
-          <div className="max-w-2xl text-slate-500/80 leading-relaxed">
+        {/* Bottom bar */}
+        <div style={{
+          borderTop: `1px solid ${HAIRLINE}`,
+          paddingTop: 28,
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          gap: 16,
+        }}>
+          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>
+            © 2026 Mosaic Venture Studio AS · Oslo, Norway · Confidential
+          </div>
+          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', lineHeight: 1.6, maxWidth: 520 }}>
             Forward-looking statements are not a guarantee of future events. All transactions
-            subject to NDA and definitive documentation.
+            subject to NDA and definitive documentation. Investor Presentation · Confidential 2026.
           </div>
         </div>
       </div>

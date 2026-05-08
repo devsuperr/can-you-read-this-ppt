@@ -7,7 +7,11 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-ink-950 text-slate-100 font-sans antialiased;
+    background: #1b1b1b;
+    color: #f1f5f9;
+    font-family: Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-feature-settings: 'cv11', 'ss01', 'ss03';
   }
   ::selection {
@@ -75,7 +79,7 @@
   position: absolute;
   left: 0; right: 0; bottom: -4px;
   height: 1.5px;
-  background: #d4af37;
+  background: #575ecf;
   transform-origin: left center;
   animation: underline-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }

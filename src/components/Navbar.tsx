@@ -2,11 +2,16 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
+/* Editorial palette — matches every page. Inline styles so publish CSS
+   can never strip or mismatch these values via Tailwind purge. */
+const ACCENT = '#575ecf';
+const MUTED  = '#c5c1b9';
+const HAIRLINE = 'rgba(255,255,255,0.08)';
 
 const links = [
   { to: '/', label: 'Home' },
-  { to: '/about', label: 'About & Investment' },
+  { to: '/investors', label: 'Investors' },
+  { to: '/about', label: 'About' },
   { to: '/projects', label: 'Projects' },
   { to: '/apply', label: 'Apply' },
 ];
@@ -35,45 +40,59 @@ export default function Navbar() {
 
   return (
     <header
-      className={cn(
-        'sticky top-0 z-40 transition-all duration-300 border-b',
-        scrolled
-          ? 'bg-ink-950/90 backdrop-blur-xl border-white/5'
-          : 'bg-transparent border-transparent',
-      )}
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 40,
+        borderBottom: `1px solid ${scrolled ? HAIRLINE : 'transparent'}`,
+        background: scrolled ? 'rgba(27,27,27,0.92)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(16px)' : undefined,
+        transition: 'background 0.3s, border-color 0.3s',
+      }}
     >
-      <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
+
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
+        <Link to="/" className="flex items-center gap-2.5 group" style={{ textDecoration: 'none' }}>
           <motion.div
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            className="w-9 h-9 rounded-md bg-ink-900 border border-gold-400/40 flex items-center justify-center group-hover:border-gold-400 transition-colors duration-200"
+            style={{
+              width: 36,
+              height: 36,
+              background: '#0a1628',
+              border: '1px solid rgba(212,175,55,0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
           >
-            <span className="text-gold-400 font-display font-bold text-lg leading-none">M</span>
+            <span className="font-display" style={{ color: '#d4af37', fontWeight: 700, fontSize: 18, lineHeight: 1 }}>M</span>
           </motion.div>
           <div className="flex items-baseline gap-2">
-            <span className="font-display text-xl tracking-wide text-white">MOSAIC</span>
-            <span className="text-[10px] uppercase tracking-[0.25em] text-gold-400/70 hidden sm:inline">
+            <span className="font-display" style={{ fontSize: 20, letterSpacing: '0.05em', color: '#fff' }}>MOSAIC</span>
+            <span className="hidden sm:inline" style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.25em', color: MUTED }}>
               Venture Studio
             </span>
           </div>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8 text-sm">
+        <nav className="hidden md:flex items-center gap-8" style={{ fontSize: 13 }}>
           {links.map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
               end={l.to === '/'}
-              className={({ isActive }) =>
-                cn(
-                  'transition-colors duration-200 relative py-1',
-                  isActive ? 'text-white nav-underline' : 'text-slate-300 hover:text-white',
-                )
-              }
+              style={({ isActive }) => ({
+                color: isActive ? '#fff' : MUTED,
+                textDecoration: 'none',
+                transition: 'color 0.2s',
+                position: 'relative',
+              })}
+              className={({ isActive }) => isActive ? 'nav-underline' : ''}
             >
               {l.label}
             </NavLink>
@@ -82,10 +101,25 @@ export default function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden md:block">
-          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
+          <motion.div
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+          >
             <Link
               to="/apply"
-              className="inline-flex items-center px-5 py-2.5 rounded-full bg-gold-400 text-ink-950 font-semibold text-sm hover:bg-gold-300 transition-colors duration-200 shadow-[0_0_30px_-10px_rgba(212,175,55,0.6)]"
+              style={{
+                background: ACCENT,
+                color: '#fff',
+                padding: '10px 22px',
+                borderRadius: 999,
+                fontSize: 13,
+                fontWeight: 500,
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
             >
               Apply for Investment
             </Link>
@@ -95,7 +129,8 @@ export default function Navbar() {
         {/* Mobile burger */}
         <motion.button
           aria-label={open ? 'Close menu' : 'Open menu'}
-          className="md:hidden p-2 text-white rounded-lg hover:bg-white/5 transition"
+          className="md:hidden p-2 rounded-lg transition"
+          style={{ color: '#fff', background: 'transparent', border: 'none', cursor: 'pointer' }}
           onClick={() => setOpen((v) => !v)}
           whileTap={{ scale: 0.9 }}
         >
@@ -107,6 +142,7 @@ export default function Navbar() {
                 animate={{ rotate: 0, opacity: 1 }}
                 exit={{ rotate: 90, opacity: 0 }}
                 transition={{ duration: 0.18 }}
+                style={{ display: 'block' }}
               >
                 <X size={22} />
               </motion.span>
@@ -117,6 +153,7 @@ export default function Navbar() {
                 animate={{ rotate: 0, opacity: 1 }}
                 exit={{ rotate: -90, opacity: 0 }}
                 transition={{ duration: 0.18 }}
+                style={{ display: 'block' }}
               >
                 <Menu size={22} />
               </motion.span>
@@ -134,7 +171,12 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden border-t border-white/5 bg-ink-950/95 backdrop-blur-xl overflow-hidden"
+            className="md:hidden overflow-hidden"
+            style={{
+              borderTop: `1px solid ${HAIRLINE}`,
+              background: 'rgba(27,27,27,0.97)',
+              backdropFilter: 'blur(16px)',
+            }}
           >
             <nav className="px-6 py-5 flex flex-col gap-1">
               {links.map((l, i) => (
@@ -147,14 +189,16 @@ export default function Navbar() {
                   <NavLink
                     to={l.to}
                     end={l.to === '/'}
-                    className={({ isActive }) =>
-                      cn(
-                        'block py-3 px-4 rounded-xl text-base transition-all duration-200',
-                        isActive
-                          ? 'bg-gold-400/10 text-white border border-gold-400/20'
-                          : 'text-slate-300 hover:bg-white/5 hover:text-white',
-                      )
-                    }
+                    style={({ isActive }) => ({
+                      display: 'block',
+                      padding: '12px 16px',
+                      fontSize: 15,
+                      textDecoration: 'none',
+                      transition: 'all 0.2s',
+                      color: isActive ? '#fff' : MUTED,
+                      background: isActive ? `${ACCENT}18` : 'transparent',
+                      border: `1px solid ${isActive ? `${ACCENT}30` : 'transparent'}`,
+                    })}
                   >
                     {l.label}
                   </NavLink>
@@ -164,11 +208,21 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: links.length * 0.06, duration: 0.25 }}
-                className="mt-2"
+                style={{ marginTop: 8 }}
               >
                 <Link
                   to="/apply"
-                  className="block text-center px-5 py-3.5 rounded-full bg-gold-400 text-ink-950 font-semibold hover:bg-gold-300 transition"
+                  style={{
+                    display: 'block',
+                    textAlign: 'center',
+                    padding: '14px 20px',
+                    borderRadius: 999,
+                    background: ACCENT,
+                    color: '#fff',
+                    fontWeight: 500,
+                    fontSize: 14,
+                    textDecoration: 'none',
+                  }}
                 >
                   Apply for Investment
                 </Link>
