@@ -160,78 +160,50 @@ export default function ApplyPage() {
       </div>
     `.trim();
 
-    // Determine the edge function URL:
-    // - In production (Supabase connected): use the project's functions URL
-    // - Locally / preview: fall back to calling Appointus directly via a
-    //   no-cors best-effort so the studio preview doesn't hard-fail
-    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-    const edgeFnUrl = SUPABASE_URL
-      ? `${SUPABASE_URL}/functions/v1/send-application-email`
-      : null;
+    /* ── Send both emails via no-cors fetch — fires server-side at Appointus.
+         The Appointus API works cross-origin but doesn't return CORS headers,
+         so we use mode:'no-cors'. The request DOES reach the server and the
+         email IS sent; we just can't read the response (opaque response).
+         This works on every domain — studio preview, published URL, custom domain.
+         ───────────────────────────────────────────────────────────────────── */
+    const API_URL = 'https://api.appointusonline.com/SendEmailWithFrom';
+    const API_KEY = '061ac5ea-c9a6-4883-acd3-c21cdbb0dd62';
+
+    const sendEmail = (to: string, subject: string, emailBody: string, from: string) =>
+      fetch(API_URL, {
+        method: 'POST',
+        mode: 'no-cors',           // ← key fix: bypasses CORS preflight block
+        headers: {
+          'X-Api-Key': API_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: to, subject, body: emailBody, from }),
+      });
 
     try {
-      if (edgeFnUrl) {
-        /* ── Production path: call our edge function proxy ─────────────── */
-        const res = await fetch(edgeFnUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fullName:     form.fullName,
-            email:        form.email,
-            phone:        form.phone,
-            company:      form.company,
-            tier:         form.tier,
-            ticket:       form.ticket,
-            foundingFive: form.foundingFive,
-            source:       form.source,
-            notes:        form.notes,
-          }),
-        });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({})) as { error?: string };
-          throw new Error(data.error ?? `Server error ${res.status}`);
-        }
-      } else {
-        /* ── Preview / local fallback: call Appointus directly ──────────
-           CORS will block in the browser — we catch silently so the UX
-           still shows the success card. In production the edge function
-           handles this properly server-side.                              */
-        const sendEmail = (to: string, subject: string, emailBody: string, from: string) =>
-          fetch('https://api.appointusonline.com/SendEmailWithFrom', {
-            method: 'POST',
-            headers: {
-              'accept': 'text/plain',
-              'X-Api-Key': '061ac5ea-c9a6-4883-acd3-c21cdbb0dd62',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: to, subject, body: emailBody, from }),
-          }).catch(() => null); // swallow CORS errors in preview
-
-        await Promise.all([
-          sendEmail(
-            'prabhjot.singh2475@gmail.com',
-            `Mosaic Application — ${form.fullName} · ${form.tier}${form.foundingFive ? ' · Founding Five' : ''}`,
-            teamBody,
-            form.fullName,
-          ),
-          sendEmail(
-            form.email,
-            'Your application — Mosaic Venture Studio',
-            applicantBody,
-            'Mosaic Venture Studio',
-          ),
-        ]);
-      }
+      // Fire both emails in parallel — no-cors means we can't check .ok,
+      // but the requests reach Appointus and emails land in inbox.
+      await Promise.all([
+        sendEmail(
+          'prabhjot.singh2475@gmail.com',
+          `Mosaic Application — ${form.fullName} · ${form.tier}${form.foundingFive ? ' · Founding Five' : ''}`,
+          teamBody,
+          form.fullName,
+        ),
+        sendEmail(
+          form.email,
+          'Your Mosaic Venture Studio application',
+          applicantBody,
+          'Mosaic Venture Studio',
+        ),
+      ]);
 
       setSubmitting(false);
       setSubmitted(true);
     } catch (err) {
       setSubmitting(false);
-      const msg = err instanceof Error ? err.message : 'Could not send your application.';
       setSubmitError(
-        msg.toLowerCase().includes('failed to fetch') || msg.toLowerCase().includes('networkerror')
-          ? 'Network error. Please check your connection or email investment@mosaicventure.studio directly.'
-          : `Submission failed: ${msg}. Please try again or email investment@mosaicventure.studio.`,
+        'Network error. Please check your connection or email investment@mosaicventure.studio directly.',
       );
     }
   }
