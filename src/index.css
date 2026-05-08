@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ink-950 text-slate-100 font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+  }
+  ::selection {
+    background: rgba(212, 175, 55, 0.3);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .gold-glow {
+    box-shadow: 0 0 60px -15px rgba(212, 175, 55, 0.5);
+  }
+  .hairline {
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+}
+
+/* ─── Shimmer on progress bars ─────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #b8932a 0%,
+    #ecc251 40%,
+    #d4af37 50%,
+    #ecc251 60%,
+    #b8932a 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 2.4s linear infinite;
+}
+
+/* ─── Floating particles in hero ────────────────────────────────────────── */
+@keyframes float-up {
+  0%   { opacity: 0;   transform: translateY(0)      scale(1); }
+  20%  { opacity: 0.6; }
+  80%  { opacity: 0.2; }
+  100% { opacity: 0;   transform: translateY(-140px) scale(0.5); }
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.55);
+  pointer-events: none;
+  animation: float-up linear infinite;
+}
+
+/* ─── Underline slide-in for nav active links ───────────────────────────── */
+@keyframes underline-in {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.nav-underline::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  height: 1.5px;
+  background: #d4af37;
+  transform-origin: left center;
+  animation: underline-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─── Page-level entrance ───────────────────────────────────────────────── */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-enter {
+  animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── Pulse ring for "deal in motion" badge ─────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0   rgba(212, 175, 55, 0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0);   }
+  100% { box-shadow: 0 0 0 0   rgba(212, 175, 55, 0);   }
+}
+
+.pulse-ring {
+  animation: pulse-ring 1.8s ease-out infinite;
+}
