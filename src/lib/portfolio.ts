@@ -143,7 +143,7 @@ export const ventures: Venture[] = [
   },
   {
     id: 'aidany',
-    name: 'Ai Dany',
+    name: 'Creative Director',
     category: 'AI',
     sector: 'Marketing',
     tagline: 'AI Creative Director that judges marketing ideas.',
@@ -151,11 +151,11 @@ export const ventures: Venture[] = [
       'Stops bad campaigns before they burn the budget. Reviews briefs, copy, and creative against decades of agency-grade taste.',
     status: 'live',
     detail: {
-      what: 'Ai Dany is an AI Creative Director — a product that evaluates marketing ideas, copy, and creative briefs before they reach production. It catches weak concepts early, when changes are cheap, instead of after the budget has been spent.',
+      what: 'Creative Director is an AI product that evaluates marketing ideas, copy, and creative briefs before they reach production. It catches weak concepts early, when changes are cheap, instead of after the budget has been spent.',
       problem: 'Most marketing waste happens upstream. A weak brief becomes a weak campaign. A campaign that fails after three weeks of production has already consumed 80% of its budget before the first impression is served. No tool in the current stack catches this early.',
-      solution: 'Ai Dany reviews briefs, headlines, campaign concepts, and creative assets against a trained model built on decades of agency-grade creative standards. It scores, explains, and suggests improvements — before a single designer opens Figma.',
+      solution: 'Creative Director reviews briefs, headlines, campaign concepts, and creative assets against a trained model built on decades of agency-grade creative standards. It scores, explains, and suggests improvements — before a single designer opens Figma.',
       businessModel: 'SaaS subscription per marketing team. Tiered by team size and monthly brief volume. Enterprise plan includes API access for direct integration with creative workflow tools (Asana, Monday, Notion).',
-      whyNow: 'Marketing teams are under pressure to produce more content with fewer people. AI writing tools have flooded the market — but they create output, not judgement. Ai Dany fills the judgement gap: it\'s the senior creative review that most teams can\'t afford to hire full-time.',
+      whyNow: 'Marketing teams are under pressure to produce more content with fewer people. AI writing tools have flooded the market — but they create output, not judgement. Creative Director fills the judgement gap: it\'s the senior creative review that most teams can\'t afford to hire full-time.',
       metrics: [
         { label: 'Function', value: 'Pre-production review' },
         { label: 'Model', value: 'SaaS per team' },
