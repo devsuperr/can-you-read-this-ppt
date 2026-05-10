@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -19,6 +19,8 @@ export default function App() {
           <Route path="/investors" element={<InvestorPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          {/* Legacy redirect — keep old /projects/aidany links working */}
+          <Route path="/projects/aidany" element={<Navigate to="/projects/creative-director" replace />} />
           <Route path="/projects/:id" element={<VentureDetailPage />} />
           <Route path="/apply" element={<ApplyPage />} />
           <Route path="*" element={<NotFound />} />

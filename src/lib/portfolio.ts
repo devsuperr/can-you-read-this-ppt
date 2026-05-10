@@ -142,7 +142,7 @@ export const ventures: Venture[] = [
     },
   },
   {
-    id: 'aidany',
+    id: 'creative-director',
     name: 'Creative Director',
     category: 'AI',
     sector: 'Marketing',
